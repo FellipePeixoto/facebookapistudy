@@ -1,11 +1,20 @@
 <?php
-    spl_autoload_register(function($connection){
-        include $class_name . '.php';
-    });
+    include "DB/Connection.php";
 
     class PlayerController{
+
+        function default_conn(){
+            $conn = new Connection();
+
+            if ($conn->connect()->connect_error)
+                die("Conexão com banco falhou: " . $conn->connect_error);
+
+            print_r($conn);
+            return $conn;
+        }
+
         function create($player){
-            $conn = default_conn();
+            $conn = $this->default_conn();
 
             $query = $conn->conn->prepare("INSERT INTO PLAYERS (nickName, userId) VALUES (?, ?)");
             $query->bind_param("si",$player->userName, $player->userId);
@@ -17,9 +26,9 @@
         }
 
         function read($userId){
-            $conn = default_conn();
+            $conn = $this->default_conn();
 
-            $query = $conn->conn->prepare("SELECT * FROM PLAYERS WHERE userId = ?";
+            $query = $conn->conn->prepare("SELECT * FROM PLAYERS WHERE userId = ?");
             $query->bind_param("i",$userId);
 
             $data = $query->execute();
@@ -50,15 +59,6 @@
 
         function delete(){
             
-        }
-
-        function default_conn(){
-            $conn = new Connection();
-
-            if ($conn->connect()->connect_error)
-                die("Conexão com banco falhou: " . $conn->connect_error);
-
-            return $conn;
         }
     }
 ?>

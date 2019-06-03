@@ -4,7 +4,7 @@ USE TETROYSDB;
 
 CREATE TABLE PLAYER(
     id_player int primary key,
-    userId int not null,
+    userId varchar(150) not null UNIQUE,
     nickName varchar(50),
     playerScore int
 );
