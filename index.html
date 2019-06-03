@@ -1,0 +1,54 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '440835713377967',
+                xfbml: true,
+                version: 'v3.3'
+            });
+            FB.AppEvents.logPageView();
+        };
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        function logou(resp) {
+            console.log(resp);
+            if (resp.authResponse) {
+                alert('logado');
+            }
+            else {
+                alert('n logado');
+            }
+        }
+
+        function logar() {
+            FB.login(logou, { scope: 'user_friends', return_scopes: true });
+        }
+
+        function checkLogin() {
+            FB.getLoginStatus((resp) => {
+                alert(resp.status);
+                alert(resp.authResponse.userID);
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+    <script>
+        console.log("??");
+    </script>
+    <button onclick="logar()">lgn</button>
+    <button onclick="checkLogin()">chk</button>
+</body>
+
+</html>
