@@ -33,6 +33,7 @@
 }
 
 #top{
+  position: absolute;  
   width: 800px;
   height: 150px;
   text-align: center;
@@ -40,22 +41,14 @@
 }
 
 #middle{
+  position: absolute;
   justify-content: center;
   display: flex;
 }
 
 #board{
+  position: relative;
   width: 200px;
-  height: 400px;
-}
-
-#right{
-  width: 300px;
-  height: 400px;
-}
-
-#left{
-  width: 300px;
   height: 400px;
 }
 

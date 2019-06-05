@@ -6,11 +6,19 @@ const bgcolor = '#b3ff47';
 const rowsNumber = 20;
 const colsNumber = 10;
 
+var canvaWidth = 800;
+var canvaHeight = 550;
+var topHeight = 150;
+var boardWidth = 200;
+var boardHeight = 400;
+var boardX = 300;
+var boardY = 150;
+var panelRighX = 500;
+var panelWidth = 300;
+var panelHeight = 400;
 
-var canvaWidth = 200;
-var canvaHeight = 400;
-var blockSizeWidth = canvaWidth / colsNumber;
-var blockSizeHeight = canvaHeight / rowsNumber;
+var blockSizeWidth = boardWidth / colsNumber;
+var blockSizeHeight = boardHeight / rowsNumber;
 
 var actualPiece;
 var tetrisMatrix = [];
@@ -29,15 +37,6 @@ var drawLoopSidesId;
 
 var mainCanvas = document.getElementById("main");
 var ctxMain = mainCanvas.getContext("2d");
-
-var topCanvas = document.getElementById("topcanvas");
-var topCTX = topCanvas.getContext("2d");
-
-var rightCanvas = document.getElementById("rightcanvas");
-var ctxRightCanvas = rightCanvas.getContext('2d');
-
-var leftCanvas = document.getElementById("leftcanvas");
-var ctxLeftCanvas = leftCanvas.getContext('2d');
 
 window.addEventListener("keydown", gameInput, false);
 
@@ -178,40 +177,40 @@ function initialize() {
 function drawSides() {
   if (!paused) {
 
-    ctxRightCanvas.fillStyle = bgcolor;
-    ctxRightCanvas.fillRect(0, 0, rightCanvas.width, rightCanvas.height);
+    ctxMain.fillStyle = bgcolor;
+    ctxMain.fillRect(panelRighX, topHeight, panelWidth, panelHeight);
 
-    ctxLeftCanvas.fillStyle = bgcolor;
-    ctxLeftCanvas.fillRect(0, 0, leftCanvas.width, leftCanvas.height);
+    ctxMain.fillStyle = bgcolor;
+    ctxMain.fillRect(0, topHeight, panelWidth, panelHeight);
 
-    ctxRightCanvas.drawImage(rightPanel, 0, 0, 300, 400);
-    ctxLeftCanvas.drawImage(leftPanel, 0, 0, 300, 400);
+    ctxMain.drawImage(rightPanel, panelRighX, topHeight, panelWidth, panelHeight);
+    ctxMain.drawImage(leftPanel, 0, topHeight, panelWidth, panelHeight);
 
-    var rightPanelMid = { x: rightCanvas.width / 2, y: rightCanvas.height / 2 };
+    var rightPanelMid = { x: panelRighX + panelWidth / 2, y: topHeight + panelHeight / 2 };
     var scoreDisplayMid = { x: scoreDisplay.width / 2, y: scoreDisplay.height / 2 };
 
-    ctxRightCanvas.drawImage(scoreDisplay, rightPanelMid.x - scoreDisplayMid.x, rightPanelMid.y - scoreDisplayMid.y);
+    ctxMain.drawImage(scoreDisplay, rightPanelMid.x - scoreDisplayMid.x, rightPanelMid.y - scoreDisplayMid.y);
 
-    ctxRightCanvas.fillStyle = "red";
-    ctxRightCanvas.font = "30px DS-DIGI";
-    ctxRightCanvas.textAlign = "center";
-    ctxRightCanvas.fillText(totalScore, rightPanelMid.x, (rightPanelMid.y + 10));
+    ctxMain.fillStyle = "red";
+    ctxMain.font = "30px DS-DIGI";
+    ctxMain.textAlign = "center";
+    ctxMain.fillText(totalScore, rightPanelMid.x, (rightPanelMid.y + 10));
 
-    var leftPanelMid = { x: leftCanvas.width / 2, y: leftCanvas.height / 2 };
+    var leftPanelMid = { x: panelWidth / 2, y: topHeight + panelHeight / 2 };
     var nextPieceMid = { x: nextPieceDisplay.width / 2, y: nextPieceDisplay.height / 2 };
 
-    ctxLeftCanvas.drawImage(nextPieceDisplay, (leftPanelMid.x) - nextPieceMid.x, (leftPanelMid.y) - nextPieceMid.y);
+    ctxMain.drawImage(nextPieceDisplay, (leftPanelMid.x) - nextPieceMid.x, (leftPanelMid.y) - nextPieceMid.y);
   }
 }
 
 function drawTop() {
   if (!paused) {
-    topCTX.clearRect(0, 0, topCanvas.width, topCanvas.height);
-    topCTX.drawImage(background, 0, 0);
-    burro.draw(topCTX);
+    ctxMain.clearRect(0, 0, canvaWidth, topHeight);
+    ctxMain.drawImage(background, 0, 0);
+    burro.draw(ctxMain);
     if (burro.px > 440)
-      topCTX.drawImage(trashCharge, burro.px - burro.corte_width, burro.py - burro.corte_height / 6);
-    topCTX.drawImage(trash, 0, 0);
+      ctxMain.drawImage(trashCharge, burro.px - burro.corte_width, burro.py - burro.corte_height / 6);
+    ctxMain.drawImage(trash, 0, 0);
     burro.update();
   }
 }
@@ -219,17 +218,17 @@ function drawTop() {
 function drawBoard() {
   if (!paused) {
 
-    ctxMain.clearRect(0, 0, canvaWidth, canvaHeight);
+    ctxMain.clearRect(300, 150, boardWidth, boardHeight);
 
     for (var x = 0; x < colsNumber; ++x) {
       for (var y = 0; y < rowsNumber; ++y) {
         if (tetrisMatrix[y][x]) {
-          ctxMain.drawImage(tiles[tetrisMatrix[y][x] - 1], blockSizeWidth * x, blockSizeHeight * y, blockSizeWidth - 1, blockSizeHeight - 1);
+          ctxMain.drawImage(tiles[tetrisMatrix[y][x] - 1], boardX + blockSizeWidth * x, boardY + blockSizeHeight * y, blockSizeWidth - 1, blockSizeHeight - 1);
         }
         else {
           ctxMain.lineWidth = 4;
           ctxMain.fillStyle = bgcolor;
-          ctxMain.fillRect(blockSizeWidth * x + 1, blockSizeHeight * y + 1, blockSizeWidth + 1, blockSizeHeight + 1);
+          ctxMain.fillRect(boardX + blockSizeWidth * x + 1, boardY + blockSizeHeight * y + 1, blockSizeWidth + 1, blockSizeHeight + 1);
         }
       }
     }
@@ -237,12 +236,12 @@ function drawBoard() {
     for (var y = 0; y < pieceSize; ++y) {
       for (var x = 0; x < pieceSize; ++x) {
         if (actualPiece[y][x]) {
-          ctxMain.drawImage(tiles[actualPiece[y][x] - 1], blockSizeWidth * (x + currentX), blockSizeHeight * (y + currentY), blockSizeWidth - 1, blockSizeHeight - 1);
+          ctxMain.drawImage(tiles[actualPiece[y][x] - 1], boardX + blockSizeWidth * (x + currentX), boardY + blockSizeHeight * (y + currentY), blockSizeWidth - 1, blockSizeHeight - 1);
         }
       }
     }
 
-    ctxMain.drawImage(ponte, 0, -1, 200, 24);
+    ctxMain.drawImage(ponte, boardX, topHeight, 200, 24);
   }
 }
 
