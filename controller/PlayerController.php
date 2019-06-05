@@ -1,7 +1,8 @@
 <?php
     include "DB/Connection.php";
+    include "model/Player.php";
 
-    class PlayerController{
+    class PlayerController {
 
         function default_conn(){
             $obj = new Connection();
@@ -61,6 +62,11 @@
         }
 
         function update_Score($score, $userId) {
+
+            $player = $this->read($userId);
+
+            if ($player->userScore >= $score)
+                die();
 
             $sql = "UPDATE PLAYER SET playerScore = ? WHERE userId = ?";
 
