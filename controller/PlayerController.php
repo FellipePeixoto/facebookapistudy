@@ -4,20 +4,20 @@
     class PlayerController{
 
         function default_conn(){
-            $conn = new Connection();
+            $obj = new Connection();
+            $conn = $obj->connect();
 
-            if ($conn->connect()->connect_error)
+            if ($conn->connect_error)
                 die("Conexão com banco falhou: " . $conn->connect_error);
 
-            print_r($conn);
             return $conn;
         }
 
         function create($player){
             $conn = $this->default_conn();
 
-            $query = $conn->conn->prepare("INSERT INTO PLAYERS (nickName, userId) VALUES (?, ?)");
-            $query->bind_param("si",$player->userName, $player->userId);
+            $query = $conn->prepare("INSERT INTO PLAYER (nickName, userId) VALUES (?, ?)");
+            $query->bind_param("ss",$player->userName, $player->userId);
 
             $query->execute();
 
@@ -26,25 +26,34 @@
         }
 
         function read($userId){
-            $conn = $this->default_conn();
 
-            $query = $conn->conn->prepare("SELECT * FROM PLAYERS WHERE userId = ?");
-            $query->bind_param("i",$userId);
-
-            $data = $query->execute();
-
-            $conn->close();
-            $query->close();
+            $sql = "SELECT * FROM PLAYER WHERE userId = ?";
 
             $player = null;
 
-            if ($data)
+            $conn = $this->default_conn();
+
+            $query = $conn->prepare($sql);
+
+            $query->bind_param("s",$userId);
+
+            $query->execute();
+            
+            $result = $query->get_result();
+
+            if ($result->num_rows > 0)
             {
-                $player = new Player();
-                $player->userName = $data['nickName'];
-                $player->userId = $data['userId'];
-                $player->userScore = $data['playerScore'];
+                if ($row = $result->fetch_assoc())
+                {
+                    $player = new Player();
+                    $player->id = $row['id_player'];
+                    $player->userName = $row['nickName'];
+                    $player->userId = $row['userId'];
+                    $player->userScore = $row['playerScore'];
+                }
             }
+
+            print_r($player);
 
             return $player;
         }

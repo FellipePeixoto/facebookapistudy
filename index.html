@@ -36,26 +36,14 @@
         function checkLogin() {
             FB.getLoginStatus((resp) => {
                 alert(resp.status);
-                alert(resp.authResponse.userID);
+                alert(resp.name);
+                alert(resp.authResponse.getLoginStatus);
             });
         }
-
-        window.onload = () => {
-            if (resp.status=="connected"){
-                
-            }
-            else {
-                
-            }
-        }
-
     </script>
 </head>
 
 <body>
-    <script>
-        console.log("??");
-    </script>
     <button onclick="logar()">lgn</button>
     <button onclick="checkLogin()">chk</button>
 </body>
