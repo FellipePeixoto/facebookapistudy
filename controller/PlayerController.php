@@ -38,7 +38,7 @@
             $query->bind_param("s",$userId);
 
             $query->execute();
-            
+
             $result = $query->get_result();
 
             if ($result->num_rows > 0)
@@ -52,8 +52,6 @@
                     $player->userScore = $row['playerScore'];
                 }
             }
-
-            print_r($player);
 
             return $player;
         }
