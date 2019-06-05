@@ -28,8 +28,8 @@ function logar() {
             FB.api('/me', function (response) {
                 console.log('Good to see you, ' + response.name + '.');
                 console.log(response);
-                document.cookie = "id="+response.id+";";
-                document.cookie = "name="+response.name+";";
+                document.cookie = "id=" + response.id + ";";
+                document.cookie = "name=" + response.name + ";";
                 window.location = "PlayerLogin.php";
             });
         } else {
@@ -46,6 +46,7 @@ window.fbAsyncInit = function () {
     });
     FB.AppEvents.logPageView();
 };
+
 (function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) { return; }
@@ -54,10 +55,6 @@ window.fbAsyncInit = function () {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-function checkAll(){
-    if (checkCookie("id") && checkCookie("name")){
-        window.location = "PlayerLogin.php";
-        return;
-    }
+function checkAll() {
     logar();
 }

@@ -5,34 +5,34 @@
     <meta charset="utf-8">
     <title>Tetroys</title>
     <link rel='stylesheet' href='tetroys.css'>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/SessionHandler.js"></script>
 </head>
+
 <body style="background-color: black">
+
+    <div id="profile">
+        <label id="name"></label>
+        <label id="high_score"></label>
+    </div>
+
+    <script src="js/ProfileLoader.js"></script>
+
     <div id="pauseText" class=""></div>
     <div id="pauseBack" class=""></div>
 
-    <center>
-    <div id="top">
-        <canvas id="topcanvas" width="800px" height="150px"></canvas>
+    <div id="board">
+        <canvas id="main" width='800' height='550'></canvas>
     </div>
-    </center>
-    <div id=middle>
-        <div id = "board">
-            <canvas id="main" width='800' height='550'></canvas>
-        </div>
+
+    <div id="comandos">
+        <br> A R R O W S to control/rotate
+        <br> S P A C E B A R to drop
+        <br> E S C to Pause
+        <br> S U B M I T to Start new Game
     </div>
-    <div style="font-family: DS-DIGI; text-align: center; color:white; line-height: 25px;">
-        <br>
-        A R R O W S to control/rotate <br>
-        S P A C E B A R to drop <br>
-        E S C to Pause <br>
-        S U B M I T to Start new Game
-    </div>
-    
-    <div
-        class="fb-like"
-        data-share="true"
-        data-width="450"
-        data-show-faces="true">
+
+    <div class="fb-like" data-share="true" data-width="450" data-show-faces="true">
     </div>
 
     <script src='scripts/classes.js'></script>

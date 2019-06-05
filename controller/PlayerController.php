@@ -60,8 +60,17 @@
             
         }
 
-        function update_Score(){
+        function update_Score($score, $userId) {
 
+            $sql = "UPDATE PLAYER SET playerScore = ? WHERE userId = ?";
+
+            $conn = $this->default_conn();
+
+            $query = $conn->prepare($sql);
+
+            $query->bind_param("is", $score, $userId);
+
+            $query->execute();
         }
 
         function delete(){

@@ -262,6 +262,14 @@ function tick() {
         clearInterval(drawLoopTopId);
         clearInterval(drawLoopSidesId);
         holdUp('Y O U   L O S E! <br> T O T A L   S C O R E: ' + totalScore + '<br> PRESS ENTER TO TRY AGAIN');
+        $.ajax({
+          data: 'id=' + getCookie("id")+"&score=" + totalScore,
+          url: 'UpdateScore.php',
+          method: 'POST',
+          success: function (msg) {
+            console.log("Score: " + totalScore + " para: " + getCookie("id"));
+          }
+        });
         return;
       }
       createPiece();

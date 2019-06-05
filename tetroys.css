@@ -32,25 +32,27 @@
   background-color: blueviolet;
 }
 
-#top{
-  position: absolute;  
-  width: 800px;
-  height: 150px;
-  text-align: center;
-  clear: both;
-}
-
-#middle{
-  position: absolute;
-  justify-content: center;
-  display: flex;
-}
-
 #board{
+  width: 800px;
+  height: 550px;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#comandos{
+  position:relative;
+  font-family: DS-DIGI;
+  text-align: center;
+  color:white; 
+}
+
+#profile{
+  position:absolute;
+  font-family: DS-DIGI;
+  text-align: center;
+  color:white; 
 }
 
 #score{
