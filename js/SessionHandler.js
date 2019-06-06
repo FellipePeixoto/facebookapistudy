@@ -1,3 +1,18 @@
+var params = {};
+
+var parser = document.createElement('a');
+parser.href = window.location.href;
+var query = parser.search.substring(1);
+var vars = query.split('&');
+
+for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    params[pair[0]] = decodeURIComponent(pair[1]);
+}
+
+if (params != null)
+    var chll = params.chll;
+
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
@@ -26,11 +41,29 @@ function logar() {
         if (response.authResponse) {
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function (response) {
-                console.log('Good to see you, ' + response.name + '.');
-                console.log(response);
-                document.cookie = "id=" + response.id + ";";
-                document.cookie = "name=" + response.name + ";";
-                window.location = "PlayerLogin.php";
+
+                if (chll!=null)
+                {
+                    $.ajax({
+                        data: 'id=' + response.id + '&name=' + response.name,
+                        url: 'Playerlogin.php',
+                        method: 'POST',
+                        success: function (data, status) {
+                            window.location = "ingame.html?id="+response.id+ "&ch=" + chll
+                        }
+                      });
+                }
+                else
+                {
+                    $.ajax({
+                        data: 'id=' + response.id + '&name=' + response.name,
+                        url: 'Playerlogin.php',
+                        method: 'POST',
+                        success: function (data, status) {
+                            window.location = "ingame.html?id="+response.id;
+                        }
+                      });
+                }
             });
         } else {
             console.log('User cancelled login or did not fully authorize.');

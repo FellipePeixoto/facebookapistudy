@@ -18,7 +18,7 @@
             $conn = $this->default_conn();
 
             $query = $conn->prepare("INSERT INTO PLAYER (nickName, userId) VALUES (?, ?)");
-            $query->bind_param("ss",$player->userName, $player->userId);
+            $query->bind_param("ss", $player->userName, $player->userId);
 
             $query->execute();
 
@@ -57,8 +57,31 @@
             return $player;
         }
 
-        function read_4Bests(){
-            
+        function read_4Bests($id){
+
+            $sql = "SELECT userId, nickName, playerScore FROM PLAYER_TOP4";
+
+            $players = [];
+
+            $conn = $this->default_conn();
+
+            $query = $conn->prepare($sql);
+
+            $query->execute();
+
+            $result = $query->get_result();
+
+            if ($result->num_rows > 0)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    array_push($players, $row);
+                }
+            }
+
+            array_push($players, $this->read($id));
+
+            return $players;
         }
 
         function update_Score($score, $userId) {

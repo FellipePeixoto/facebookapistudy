@@ -76,7 +76,7 @@ function gameInput(e) {
     killTetramine();
   }
 
-  if (e.keyCode == 13) { // reset 'r'
+  if (e.keyCode == 13) { // reset 'submit'
     newGame();
   }
 
@@ -261,15 +261,8 @@ function tick() {
         clearInterval(drawLoopBoardId);
         clearInterval(drawLoopTopId);
         clearInterval(drawLoopSidesId);
-        holdUp('Y O U   L O S E! <br> T O T A L   S C O R E: ' + totalScore + '<br> PRESS ENTER TO TRY AGAIN');
-        $.ajax({
-          data: 'id=' + getCookie("id")+"&score=" + totalScore,
-          url: 'UpdateScore.php',
-          method: 'POST',
-          success: function (msg) {
-            console.log("Score: " + totalScore + " para: " + getCookie("id"));
-          }
-        });
+        holdUp('Y O U   L O S E! <br> M A T C H   H I G H  S C O R E: ' + totalScore + '<br> PRESS ENTER TO TRY AGAIN');
+        save_score();
         return;
       }
       createPiece();
@@ -297,6 +290,7 @@ function checkAndClearLine() {
       }
       y++;
       totalScore += pointToClearLine;
+      compare(totalScore);
       lineClean.play();
     }
   }
@@ -396,6 +390,8 @@ function newGame() {
     if (holdUpControl)
       holdUp();
     createPiece();
+    update_player_info();
+    update_rank();
   }
 }
 
@@ -412,6 +408,17 @@ function startGame() {
   drawLoopBoardId = setInterval(drawBoard, 1000 / fps);
   drawLoopTopId = setInterval(drawTop, (1000 / fps) * 3);
   drawLoopSidesId = setInterval(drawSides, (1000 / fps) * 3);
+}
+
+function save_score(){
+  $.ajax({
+    data: 'id=' + getCookie("id")+"&score=" + totalScore,
+    url: 'UpdateScore.php',
+    method: 'POST',
+    success: function (msg) {
+      console.log("Score: " + totalScore + " para: " + getCookie("id"));
+    }
+  });
 }
 
 startGame();

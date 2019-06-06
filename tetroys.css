@@ -55,6 +55,12 @@
   color:white; 
 }
 
+#rank_panel {
+  font-family: DS-DIGI;
+  text-align: center;
+  color:white; 
+}
+
 #score{
   background-color: blueviolet;
 }
